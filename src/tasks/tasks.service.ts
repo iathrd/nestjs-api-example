@@ -33,4 +33,14 @@ export class TasksService {
       throw new NotFoundException('id doest exist');
     }
   }
+
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskbById(id);
+
+    task.status = status;
+
+    await this.taskRepository.save(task);
+
+    return task;
+  }
 }
