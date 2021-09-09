@@ -21,4 +21,8 @@ export class TasksController {
   getTasksById(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTaskbById(id);
   }
+  @Post()
+  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksService.createTask(createTaskDto);
+  }
 }
