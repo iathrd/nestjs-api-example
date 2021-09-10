@@ -2,6 +2,10 @@ import { EntityRepository, Repository } from 'typeorm';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { User } from './user.entity';
 import * as argon2 from 'argon2';
+import {
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -12,6 +16,14 @@ export class UserRepository extends Repository<User> {
       password: hashedPassword,
       username,
     });
-    await this.save(user);
+    try {
+      await this.save(user);
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new ConflictException('Username already exist');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 }
