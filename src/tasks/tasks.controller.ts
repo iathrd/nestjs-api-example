@@ -23,8 +23,11 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
   @Get()
-  getTasks(@Query() filterDto: GetTasksFilterDto): Promise<Task[]> {
-    return this.tasksService.getTasks(filterDto);
+  getTasks(
+    @Query() filterDto: GetTasksFilterDto,
+    @GetUser() user: User,
+  ): Promise<Task[]> {
+    return this.tasksService.getTasks(filterDto, user);
   }
   @Get(':id')
   getTasksById(@Param('id') id: string): Promise<Task> {
@@ -35,7 +38,7 @@ export class TasksController {
     @Body() createTaskDto: CreateTaskDto,
     @GetUser() user: User,
   ): Promise<Task> {
-    return this.tasksService.createTask(createTaskDto,user);
+    return this.tasksService.createTask(createTaskDto, user);
   }
   @Delete(':id')
   deleteTask(@Param('id') id: string): Promise<void> {
