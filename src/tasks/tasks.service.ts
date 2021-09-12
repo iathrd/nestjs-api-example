@@ -17,7 +17,7 @@ export class TasksService {
     return this.taskRepository.getTasks(filterDto, user);
   }
 
-  async getTaskbById(id: string, user: User): Promise<Task> {
+  async getTasksById(id: string, user: User): Promise<Task> {
     const found = await this.taskRepository.findOne({ where: { id, user } });
 
     if (!found) {
@@ -44,7 +44,7 @@ export class TasksService {
     status: TaskStatus,
     user: User,
   ): Promise<Task> {
-    const task = await this.getTaskbById(id, user);
+    const task = await this.getTasksById(id, user);
 
     task.status = status;
 
